@@ -8,6 +8,9 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+```{r, include = FALSE}
+options(width = 100)
+```
 ###Introduction
 Networks of species interactions are regularly plotted and analysed in ecology. Many of these networks are bipartite, such as pollinators and flowers, seed dispersers and plants, and parasitoids and their hosts, whilst others are more complex, such as food webs with several trophic levels.  Null models can help to analyse these networks, looking at such characteristics as which species (nodes) interact with one another, the strength of individual interactions (link strengths) and the role of individual species in the network (e.g. specialist v. generalist). In particular, null models can distinguish features of the network that cannot be explained by 'neutral' mechanisms, such as the relative abundance of different organisms or sampling effects.
 
@@ -54,7 +57,7 @@ Classes 1–2 are examples of nominal data at the level of individual consumers,
 `nullnetr` includes three data sets to illustrate a range of functionality (see the individual help files for full details):
 
 1. `Silene`. One of the bipartite flower visitation networks from Gibson *et al*., (2006), notable for the presence of small-flowered catchfly *Silene gallica*, a rare arable weed species in the UK. The network comprises five plant species and 128 flower visitors of 31 species.
-1. `WelshStreams`. Part of the macroinvertebrate food web from upland streams in south Wales, UK (Pearson *et al*., submitted). The network focuses on two abundant predators (*Rhyacophila dorsalis* and *Dinocras cephalotes*), with 85 individuals and 16 potential prey. Distinguished from a bipartite network by intra-guild predation between the two predators.
+1. `WelshStreams`. Part of the macroinvertebrate food web from upland streams in south Wales, UK (Pearson 2015). The network focuses on two abundant predators (*Rhyacophila dorsalis* and *Dinocras cephalotes*), with 85 individuals and 16 potential prey. Distinguished from a bipartite network by intra-guild predation between the two predators.
 1. `Broadstone`. Part of the highly-resolved Broadstone Stream food web (Woodward *et al*., 2005). The data are from August 1996, with 19 macroinvertebrate taxa, including 319 individuals of seven predatory species. A matrix of 'forbidden links', i.e. those which cannot occur in the network, is also provided, estimated from more extensive sampling of Broadstone Stream.
 
 ###Example 1. Analysis of a bipartite network (`Silene`)
@@ -366,7 +369,7 @@ Gotelli, N.J. & Ulrich, W. (2010) The empirical Bayes approach as a tool to iden
 
 Hudson, L.N., Emerson, R., Jenkins, G.B., Layer, K., Ledger, M.E., Pichler, D.E., Thompson, M.S.A., O’Gorman, E.J., Woodward, G & Reuman, D.C. (2013) Cheddar: analysis and visualisation of ecological communities in R. *Methods in Ecology and Evolution*, **4**, 99–104.
 
-Pearson, C.E., Symondson, W.O.C., Clare, E.L., Ormerod, S.J., Bolanos, I.E. and Vaughan, I.P. (submitted) The effects of pastoral intensification on the feeding interactions of generalist predators in streams.
+Pearson, C.E. (2015) *Effects of agricultural intensification on the ecology of upland stream invertebrate communities*. Unpublished PhD thesis, Cardiff University.
 
 Vaughan, I.P., Gotelli, N.J., Memmott, J., Pearson, C.L., Woodward, G. & Symondson, W.O.C. (submitted) nullnetr: an R package using null modelling to analyse the structure of ecological networks and identify resource selection.
 
