@@ -44,5 +44,34 @@ vdiffr::expect_doppelganger("Plot bipartite v1 0.95", pl2)
 vdiffr::expect_doppelganger("Plot bipartite v1 0.99", pl3)
 vdiffr::expect_doppelganger("Plot bipartite v2 0.95", pl4)
 vdiffr::expect_doppelganger("Plot bipartite v3 0.95", pl5)
+})
 
+
+test_that("Correct handling of zero values",{
+  skip_on_cran()
+  # c.1 = one column in consumer data = 0; c.2 = one consumer sp has no
+  #  interactions recorded; r.2 = r.1, but with res.7 set to 0, creating a
+  #  'double zero' (abundance = 0 and no interactions, but recorded in both
+  #  consumer and resource data sets)
+  c.1 <- read.csv(system.file("testdata", "df4_cons_zero_res.csv",
+                              package = "nullnetr"))
+  c.2 <- read.csv(system.file("testdata", "df4_cons_zero_cons.csv",
+                              package = "nullnetr"))
+  r.1 <- read.csv(system.file("testdata", "df1_res.csv",
+                              package = "nullnetr"))
+  r.2 <- read.csv(system.file("testdata", "df4_res_zero_res.csv",
+                              package = "nullnetr"))
+
+  set.seed(1234)
+  n.1 <- generate_null_net(c.1, r.1, sims = 100, prog.count = FALSE)
+  n.2 <- generate_null_net(c.2, r.1, sims = 100, prog.count = FALSE)
+  n.3 <- generate_null_net(c.1, r.2, sims = 100, prog.count = FALSE)
+
+  pl6 <- function() plot_bipartite(n.1, signif.level = 0.95)
+  pl7 <- function() plot_bipartite(n.2, signif.level = 0.95)
+  pl8 <- function() plot_bipartite(n.3, signif.level = 0.95)
+
+  vdiffr::expect_doppelganger("Plot bipartite unused resource", pl6)
+  vdiffr::expect_doppelganger("Plot bipartite consumer no interactions", pl7)
+  vdiffr::expect_doppelganger("Plot bipartite unused resource zero abund", pl8)
 })

@@ -115,6 +115,7 @@ plot_bipartite <- function(nullnet, signif.level = 0.95,
 
   # --------------------------------------
   # Generate bipartite web plot
-  bipartite::plotweb(obs.web, method = "normal", col.interaction = select.vector, ...)
+  bipartite::plotweb(obs.web, method = "normal", empty = FALSE,
+                     col.interaction = select.vector, ...)
 }
 

@@ -23,6 +23,7 @@ test_that("Basic error warnings",{
 #  indices (e.g. degree distribution) are specified
 test_that("Check bipartite specieslevel compatibility",{
   skip_on_cran()
+  set.seed(1234)
   expect_error(bipartite_stats(s.1, index.type = "specieslevel",
                                indices = "degree distribution"))
   expect_warning(bipartite_stats(s.1, index.type = "specieslevel",
@@ -38,7 +39,7 @@ test_that("Check bipartite specieslevel compatibility",{
 
 test_that("Consistent outputs of the bipartite statistics at all 3 levels",{
   skip_on_cran()
-  set.seed(123)
+  set.seed(1234)
   expect_equal_to_reference(bipartite_stats(s.1, index.type = "specieslevel",
                                             indices = "ALLBUTD",
                                             prog.count = FALSE), "sl_test")
@@ -48,6 +49,5 @@ test_that("Consistent outputs of the bipartite statistics at all 3 levels",{
   expect_equal_to_reference(bipartite_stats(s.1, index.type = "networklevel",
                                             indices = "ALLBUTDD",
                                             prog.count = FALSE), "nl_test")
-
 })
 
