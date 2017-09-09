@@ -4,8 +4,9 @@
 \alias{plot_preferences}
 \title{Plot the resource preferences of a consumer}
 \usage{
-plot_preferences(nullnet, node, signif.level = 0.95, bar.type = "counts",
-  res.order = NULL, bar.colours = NULL, bar.colors = NULL, ...)
+plot_preferences(nullnet, node, signif.level = 0.95, style = "dots",
+  type = "counts", res.col = c("#67A9CF", "#F7F7F7", "#EF8A62"),
+  res.order = NULL, l.cex = 1, p.cex = 1, ...)
 }
 \arguments{
 \item{nullnet}{An object of class nullnet from \code{generate_null_net}}
@@ -16,16 +17,26 @@ preferences will be plotted}
 \item{signif.level}{An optional value specifying the threshold used for
 testing for 'significant' deviations from the null model.  Defaults to 0.95}
 
-\item{bar.type}{Optional string to specify what the bars show. The default
-(\code{bar.type = "counts"}) is the total number of interactions or mean
-interaction strength, depending upon which one was requested in the
+\item{style}{An optional string to set whether a dotchart of bar chart is
+plotted. The default (\code{style = "dots"}) is a Cleveland dot plot,
+whilst the alternative (\code{style = "bars"}) is a bar chart of the type
+used by King \emph{et al.} (2010) and Davey \emph{et al.} (2013).}
+
+\item{type}{Optional string to specify how preferences are displayed. The
+default (\code{type = "counts"}) is the total number of interactions or
+mean interaction strength, depending upon which one was requested in the
 original call to \code{\link{generate_null_net}} using the
 \code{summary.type} argument.  The alternative is the standardised effect
-size (\code{bar.type = "SES"}).  With \code{bar.type = "counts"}, confidence
-limits will be shown as error bars, whilst for the standardised effect size,
-dashed lines are added at +2 and -2, which is approximately equivalent to 5\%
-significance level.  Both types of bars will be coloured if \code{bar.colours}
-is specified.}
+size (\code{type = "SES"}).  With \code{type = "counts"},
+confidence limits will be drawn, whilst for the standardised effect
+size, dashed lines are added at +2 and -2, which is approximately equivalent
+to a 5\% significance level: fill colours for \code{type = "SES"} are
+based on the estimated confidence limits, rather than the +2/-2 thresholds.}
+
+\item{res.col}{An optional character vector of length three specifying
+the colours with which to fill the dots or bars representing interactions
+that are weaker than expected, consistent with the null model and stronger
+than expected (in that order). The default is a red-blue colour scheme.}
 
 \item{res.order}{An optional data frame used to set the order in which the
 resource species are plotted.  Should have two columns: the first listing
@@ -33,44 +44,52 @@ the resource species (names must be identical to those used by
 \code{generate_null_net}) and the second the plotting order (bars will be
 plotted in ascending order)}
 
-\item{bar.colours}{An optional character vector of length three specifying
-the colours with which to fill bars representing interactions that are
-weaker than expected, consistent with the null model and stronger than
-expected (in that order).  If this argument is not included, the bars will
-be unfilled.}
+\item{l.cex}{An optional numeric value to set the size of the labels when
+using \code{style = "dots"}. Ignored when \code{style = "bars"}, as
+\code{barplot}'s \code{cex.names} argument can be used.}
 
-\item{bar.colors}{Alternative spelling for \code{bar.colours}}
+\item{p.cex}{An optional numeric value to set the size of the points when
+when using \code{style = "dots"}.}
 
 \item{...}{Other arguments to control basic plotting functions in R, such as
-\code{xlab}, \code{ylab}, \code{main}, \code{xlim} and \code{ylim}.}
+\code{lwd}, \code{xlab}, \code{ylab}, \code{main}, \code{xlim} and
+\code{ylim}.}
 }
 \description{
 Takes a 'nullnet' object from running a null model with
   \code{generate_null_net} and plots the observed and expected link
   strengths for every resource for a selected consumer species (node in
-  the network).  The function is based on \code{\link[graphics]{barplot}}, so
-  see \code{?barplot} for further options for customising the plots.
+  the network).  There are two styles of plot: the default is a dot plot
+  based on \code{\link[graphics]{dotchart}}, whilst the alternative is a
+  bar plot based on \code{\link[graphics]{barplot}}.  There are arguments in
+  \code{plot_preferences} to set some of the graphical parameters, but see
+  the respective help files for \code{\link[graphics]{dotchart}} and
+  \code{\link[graphics]{barplot}} for further options to customise the plots.
 }
 \details{
-Plots the preferences for individual consumer species, following the
-  basic format of King \emph{et al}. (2010; Figure 3) and Davey \emph{et al}.
-  (2013; Figure 3).
+Plots the preferences for individual consumer species. The bar plot
+  format follows the basic style of King \emph{et al}. (2010; Figure 3) and
+  Davey \emph{et al.} (2013; Figure 3).
 }
 \examples{
 null.1 <- generate_null_net(WelshStreams[, 2:18], WelshStreams.prey[, 2:17],
                             sims = 10, c.samples = WelshStreams[, 1],
                             r.samples = WelshStreams.prey[, 1])
-# Generate plot using three-level diverging colour scheme to fill the bars
-#   (Brewer 2017), increasing the lower margin so that names fit
+# Basic plots, showing the dot and bar plot styles. Increased lower margin
+#   on the bar plot so that names fit
+plot_preferences(null.1, "Dinocras", signif.level = 0.95, type = "counts",
+                 xlab = "Num. of visits", p.cex = 1.2, lwd = 2)
+
 par(mar = c(9, 4, 4, 2) + 0.1)
-plot_preferences(null.1, "Dinocras", signif.level = 0.95,
-                 bar.colours = c("#998EC3", "#F7F7F7", "#F1A340"),
-                 bar.type = "counts", ylab = "Num. of visits")
+plot_preferences(null.1, "Dinocras", style = "bars", signif.level = 0.95,
+                 type = "counts", ylab = "Num. of visits")
 
 # Same results, this time showing the standardised effect sizes
 plot_preferences(null.1, "Rhyacophila", signif.level = 0.95,
-                 bar.colours = c("#998EC3", "#F7F7F7", "#F1A340"),
-                 bar.type = "SES", ylab = "SES")
+                 type = "SES", xlab = "SES")
+par(mar = c(9, 4, 4, 2) + 0.1)
+plot_preferences(null.1, "Rhyacophila", signif.level = 0.95, style = "bars",
+                 type = "SES", ylab = "SES")
 
 }
 \references{

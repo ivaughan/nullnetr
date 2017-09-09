@@ -177,6 +177,15 @@ generate_null_net <- function(consumers, resources, sims = 100,
                               r.samples = NULL, r.weights = NULL,
                               prog.count = TRUE){
 
+  # Convert to basic data frames (important when data are stored in tidyverse
+  #   'tibble' format
+  consumers <- as.data.frame(consumers)
+  consumers[, 1] <- as.factor(consumers[, 1])
+  resources <- as.data.frame(resources)
+  if(!is.null(c.samples)) c.samples <- as.data.frame(c.samples)[, 1]
+  if(!is.null(r.samples)) r.samples <- as.data.frame(r.samples)[, 1]
+  if(!is.null(r.weights)) r.weights <- as.data.frame(r.weights)
+
   # --------------------------------------
   # Initial error handling:
   # --------------------------------------
@@ -220,8 +229,8 @@ generate_null_net <- function(consumers, resources, sims = 100,
     all.res <- cbind(r.samples, resources)
     all.res <- all.res[order(all.res$r.samples, decreasing = FALSE), ]
     if(sum(spp.consumed[, -1] >0 && all.res[, -1] == 0) > 0) {warning(
-      "There is at least one instance where a consumer interacted with a resource
-      that has zero abundance in 'resources' (where 'c.samples' matches 'r.samples')")}
+      "One or more instances detected where a consumer interacted with a resource
+      that has zero abundance in 'resources'")}
   } else {
     spp.consumed <- colSums(consumers[, -1])
     all.res <- resources

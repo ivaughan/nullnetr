@@ -155,11 +155,10 @@ test_interactions <- function(nullnet, signif.level = 0.95) {
 
   # --------------------------------------
   # Warning messages for i) Type I error and ii) small number of iterations
-  if(nullnet$n.iterations < 100) warning(paste("Due to the small number of ",
-     "null model iterations, the accuracy of confidence limits may be low",
-     sep = ""))
-  if(nrow(output) > 50) warning(paste("Due to the large number of tests, ",
-     "exercise caution due to the risks of Type I errors", sep = ""))
+  if(nullnet$n.iterations < 100) warning(paste("Confidence limits will ",
+     "be imprecise due to the small number of null model iterations", sep = ""))
+  if(nrow(output) > 50) warning(paste("Be careful of Type I errors due to ",
+     "the large number of tests", sep = ""))
   # --------------------------------------
 
   return(output)
