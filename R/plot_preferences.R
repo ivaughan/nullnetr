@@ -98,13 +98,12 @@ plot_preferences <- function(nullnet, node, signif.level = 0.95,
                              res.col = c("#67A9CF", "#F7F7F7", "#EF8A62"),
                              res.order = NULL, l.cex = 1, p.cex = 1, ...) {
 
-  # Convert 'res.order' to basic data frame (important when data are stored in
-  #   tidyverse 'tibble' format
+  # Ensure 'res.order' is in data frame format (important when data are stored in
+  #   tidyverse 'tibble' format)
   if(!is.null(res.order)) {
     res.order <- as.data.frame(res.order)
     res.order[, 1] <- as.factor(res.order[, 1])
   }
-
   # --------------------------------------
   # Set significance level
   if (signif.level <= 0 || signif.level >= 1) {
@@ -158,15 +157,14 @@ plot_preferences <- function(nullnet, node, signif.level = 0.95,
         # Plot built up in 2 stages: i) using min and max values to set the
         #   y-axis range without having to use ylim (so this can be customised
         #   by the user), ii) the main dbarplot and label, and iii) the error
-        graphics::dotchart(ti$Setup, labels = ti$Resource, col = 1,
-                           pt.cex = 0, cex = l.cex, main = node, ...)
+        graphics::dotchart(ti$Setup, labels = paste(ti$Resource, " ", sep = ""),
+                           col = 1, pt.cex = 0, cex = l.cex, main = node, ...)
         graphics::abline(v = 0, lty = 2, col = "dimgrey")
 
         for (i in 1:nrow(ti)){
           eval(parse(text = paste("lines(x = c(ti$Lower.", signif.level * 100,
                                   ".CL[i], ti$Upper.", signif.level * 100,
-#                                  ".CL[i]), y = c(i, i), lwd = lwd)", sep = "")))
-".CL[i]), y = c(i, i), ...)", sep = "")))
+                                  ".CL[i]), y = c(i, i), ...)", sep = "")))
           if(ti$Test[i] == "Weaker") p.col <- res.col[1]
           if(ti$Test[i] == "ns" | is.na(ti$Test[i])) p.col <- res.col[2]
           if(ti$Test[i] == "Stronger") p.col <- res.col[3]
@@ -177,15 +175,14 @@ plot_preferences <- function(nullnet, node, signif.level = 0.95,
         colnames(res.order) <- c("Taxon", "Order")
         ti <- merge(ti, res.order, by.x = "Resource", by.y = "Taxon")
         ti <- ti[order(ti$Order, decreasing = FALSE), ]
-        graphics::dotchart(ti$Setup, labels = ti$Resource, col = 1,
-                           pt.cex = 0, cex = l.cex, main = node, ...)
+        graphics::dotchart(ti$Setup, labels = paste(ti$Resource, " ", sep = ""),
+                           col = 1, pt.cex = 0, cex = l.cex, main = node, ...)
         graphics::abline(v = 0, lty = 2, col = "dimgrey")
 
         for (i in 1:nrow(ti)){
           eval(parse(text = paste("lines(x = c(ti$Lower.", signif.level * 100,
-                                  ".CL[i], ti$Upper.", signif.level * 100,
-#                                  ".CL[i]), y = c(i, i), lwd = lwd)", sep = "")))
-".CL[i]), y = c(i, i), ...)", sep = "")))
+                                ".CL[i], ti$Upper.", signif.level * 100,
+                                ".CL[i]), y = c(i, i), ...)", sep = "")))
           if(ti$Test[i] == "Weaker") p.col <- res.col[1]
           if(ti$Test[i] == "ns" | is.na(ti$Test[i])) p.col <- res.col[2]
           if(ti$Test[i] == "Stronger") p.col <- res.col[3]

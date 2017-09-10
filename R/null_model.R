@@ -177,8 +177,8 @@ generate_null_net <- function(consumers, resources, sims = 100,
                               r.samples = NULL, r.weights = NULL,
                               prog.count = TRUE){
 
-  # Convert to basic data frames (important when data are stored in tidyverse
-  #   'tibble' format
+  # Ensure input data are in data frame format (important when data are stored
+  #   in tidyverse 'tibble' format)
   consumers <- as.data.frame(consumers)
   consumers[, 1] <- as.factor(consumers[, 1])
   resources <- as.data.frame(resources)
@@ -212,7 +212,8 @@ generate_null_net <- function(consumers, resources, sims = 100,
      (nrow(resources) != length(r.samples)) ||
      (nrow(consumers) != length(c.samples)) ||
      (!identical(sort(unique(r.samples)), sort(unique(c.samples))))}) {
-      stop("There is a problem with the sample codes: 'c.samples' and/or 'r.samples'
+      stop("There is a problem with the sample codes:
+'c.samples' and/or 'r.samples'
        are of incorrect length or their sample codes do not match")}
 
   # 4. Abundance weights (typically forbidden link values) are in the range 0 - 1
@@ -229,14 +230,14 @@ generate_null_net <- function(consumers, resources, sims = 100,
     all.res <- cbind(r.samples, resources)
     all.res <- all.res[order(all.res$r.samples, decreasing = FALSE), ]
     if(sum(spp.consumed[, -1] >0 && all.res[, -1] == 0) > 0) {warning(
-      "One or more instances detected where a consumer interacted with a resource
-      that has zero abundance in 'resources'")}
+      "One or more instances detected where a consumer interacted with a
+       resource that has zero abundance in 'resources'")}
   } else {
     spp.consumed <- colSums(consumers[, -1])
     all.res <- resources
     if(sum(spp.consumed >0 & all.res == 0) > 0) {warning(
-      "There is at least one instance where a resource was consumed but was
-      zero in the abundance data (i.e. 'resources')")}
+      "There is at least one instance where a resource was consumed but
+      was zero in the abundance data (i.e. 'resources')")}
   }
 
   # 6. Correct types of data for data.type = "names" and "counts"
