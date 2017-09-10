@@ -204,8 +204,8 @@ plot_preferences <- function(nullnet, node, signif.level = 0.95,
       max.x <- max.x + (ran.x * 0.05)
       ti$Setup <- seq(min.x, max.x, length.out = nrow(ti))
       if (is.null(res.order)) {
-        graphics::dotchart(ti$Setup, labels = ti$Resource, col = 1, pt.cex = 0,
-                           cex = l.cex, main = node, ...)
+        graphics::dotchart(ti$Setup, labels = paste(ti$Resource, " ", sep = ""),
+                           col = 1, pt.cex = 0, cex = l.cex, main = node, ...)
         graphics::abline(v = 2, lty = 2)
         graphics::abline(v = 0, lty = 1)
         graphics::abline(v = -2, lty = 2)
@@ -221,8 +221,8 @@ plot_preferences <- function(nullnet, node, signif.level = 0.95,
         ti <- merge(ti, res.order, by.x = "Resource", by.y = "Taxon")
         ti <- ti[order(ti$Order, decreasing = FALSE), ]
 
-        graphics::dotchart(ti$Setup, labels = ti$Resource, col = 1, pt.cex = 0,
-                          cex = l.cex, main = node, ...)
+        graphics::dotchart(ti$Setup, labels = paste(ti$Resource, " ", sep = ""),
+                           col = 1, pt.cex = 0, cex = l.cex, main = node, ...)
         graphics::abline(v = 2, lty = 2)
         graphics::abline(v = 0, lty = 1)
         graphics::abline(v = -2, lty = 2)
